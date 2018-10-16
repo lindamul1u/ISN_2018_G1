@@ -7,11 +7,15 @@ public class Plateau {
 	private int nbrmurs;
 	private int nbrcaselibre;
 	private String mur="X";
-	private String chemin=" ";
+	private String chemin="-";
+	private String heros="0";
+	private Heros h;
+	private char Commande;
 
 	public Plateau(int n,int m,int nbrmurs) {
 		this.n=n;
 		this.m=m;
+		
 		this.nbrmurs=nbrmurs;
 		plateau=new String[n][m];
 
@@ -27,6 +31,8 @@ public class Plateau {
 		System.out.println(toString());
 		ajustement();
 		nbrcase();
+		h=new Heros(this);
+		ajoutHeros();
 	}
 	//Vérifie que le couple (x,y) n'est pas mur ext
 	private boolean appartientPlateau(int x,int y) {
@@ -66,6 +72,7 @@ public class Plateau {
 	private int nbAleat(int Min,int Max) {
 		return Min + (int)(Math.random() * ((Max - Min) ));
 	}
+	
 	//génere les N murs sur le plateau de façon aléat
 	private void murAleat(int nbrmurs) {
 		int x=0;
@@ -178,5 +185,36 @@ public class Plateau {
 	public int getcolonnes() {
 		return m;
 	}
-
+	public String getMurs() {
+		return mur;
+	}
+	public String getChemin() {
+		return chemin;
+	}
+	public Heros getHeros() {
+		return h;
+	}
+	public void ajoutHeros() {
+		int xh=h.getX();
+		int yh=h.getY();
+		System.out.println(h);
+		plateau[xh][yh]=heros;
+		
+	}
+	public String getHerosS() {
+		return heros;
+	}
+	public void supprHeros() {
+		plateau[h.getX()][h.getY()]=chemin;
+				
+	}
+	public void setCommande(char c) {
+		Commande=c;
+		supprHeros();
+		h.Deplacement(Commande);
+		ajoutHeros();
+		
+		
+	}
+	
 }
