@@ -6,9 +6,13 @@ import javax.swing.JPanel;
 public class Graphique extends JPanel {
 	  private int posX = 50;
 	  private int posY = 50;
+	  private Color c;
+	  Graphique(Color c){
+		  this.c=c;
+	  }
 
 	  public void paintComponent(Graphics g){
-	    g.setColor(Color.red);
+	    g.setColor(c);
 	    g.fillOval(posX, posY, 10,10);
 	  }
 
@@ -26,5 +30,10 @@ public class Graphique extends JPanel {
 
 	  public void setPosY(int posY) {
 	    this.posY = posY;
-	  }        
+	  }   
+	  public void setCol(Color c) {
+		  this.c=c;
+	  }
+	  
+	  
 	}

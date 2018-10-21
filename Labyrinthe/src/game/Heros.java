@@ -52,61 +52,63 @@ public class Heros {
 		}
 	}
 	public void Deplacement(char c) {
-		if(c==8) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				y=y-1;
+		p.remove(x, y);
+		if(c=='7') {
+			if(p.getPlateau()[x-1][y-1].equals(p.getChemin())) {
+				setPos(x-1,y-1);
 			}
 			
 		}
-		else if(c==7) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				y=y-1;
-				x=x-1;
+		else if(c=='8') {
+			if(p.getPlateau()[x][y-1].equals(p.getChemin())) {
+				setPos(x,y-1);
 			}
 			
 		}
-		else if(c==9) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				y=y-1;
-				x=x+1;
+		else if(c=='9') {
+			if(p.getPlateau()[x+1][y-1].equals(p.getChemin())) {
+				setPos(x+1,y-1);
 			}
 			
 		}
-		else if(c==4) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
+		else if(c=='4') {
+			if(p.getPlateau()[x-1][y].equals(p.getChemin())) {
+				setPos(x-1,y);
+			}
+			
+		}
+		else if(c=='6') {
+			if(p.getPlateau()[x+1][y].equals(p.getChemin())) {
 				
-				x=x-1;
+				setPos(x+1,y);
 			}
 			
 		}
-		else if(c==7) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				
-				x=x+1;
+		else if(c=='1') {
+			if(p.getPlateau()[x-1][y+1].equals(p.getChemin())) {
+				setPos(x-1,y+1);
 			}
 			
 		}
-		else if(c==1) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				y=y+1;
-				x=x-1;
-			}
-			
-		}
-		else if(c==2) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				y=y+1;
+		else if(c=='2') {
+			if(p.getPlateau()[x][y+1].equals(p.getChemin())) {
+				setPos(x,y+1);
 				
 			}
 			
 		}
-		else if(c==7) {
-			if(p.getPlateau()[x][y].equals(p.getChemin())) {
-				y=y+1;
-				x=x+1;
+		else if(c=='3') {
+			if(!p.getPlateau()[x+1][y+1].equals(p.getMurs())) {
+				setPos(x+1,y+1);
+				
 			}
 			
 		}
+		else {
+		System.out.println("Mur !");
+		}
+		p.setPlateau(x, y, p.getHerosS());
+	
 	}
 	private int nbAleat(int Min,int Max) {
 		return Min + (int)(Math.random() * ((Max - Min) ));

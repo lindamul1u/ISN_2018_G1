@@ -216,5 +216,11 @@ public class Plateau {
 		
 		
 	}
+	public void remove(int i,int j) {
+		if(!plateau[i][j].equals(mur)) {
+			plateau[i][j]=chemin;
+		}
+		
+	}
 	
 }
