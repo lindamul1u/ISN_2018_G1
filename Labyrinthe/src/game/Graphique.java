@@ -13,7 +13,9 @@ public class Graphique extends JPanel {
 
 	  public void paintComponent(Graphics g){
 	    g.setColor(c);
-	    g.fillOval(posX, posY, 10,10);
+	    g.fillRect(posX, posY, 10,10);
+	   
+	 
 	  }
 
 	  public int getPosX() {
