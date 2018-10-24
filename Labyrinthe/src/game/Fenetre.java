@@ -86,7 +86,7 @@ public class Fenetre extends JFrame implements KeyListener{
 		//System.out.println(p);
 	}
 
-	@Override
+
 	public void keyPressed(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 
@@ -109,7 +109,7 @@ public class Fenetre extends JFrame implements KeyListener{
 
 	}
 
-	@Override
+	
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		//System.out.println(p);
@@ -128,7 +128,7 @@ public class Fenetre extends JFrame implements KeyListener{
 		gr.repaint();}
 	
 
-	@Override
+	
 	public void keyTyped(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 

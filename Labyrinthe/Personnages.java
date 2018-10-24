@@ -89,27 +89,6 @@ public class Personnages {
 	
 	
 	
-	/*public void gestionDuClavier() {	
-
-
-		int px = this.vaisseau.getX();
-
-		// deplacement a droite
-		if(tabTouches[2]==true && tabTouches[0]==false && tabTouches[1]==false){
-			if(px<756)
-			{
-				this.vaisseau.setX(px+10);
-			}
-		}
-
-		//deplacement a gauche
-		else if(tabTouches[1]==true && tabTouches[0]==false && tabTouches[2]==false){
-			if(px>10)
-			{
-				this.vaisseau.setX(px-10);
-			}
-		}
-
-*/
+	
 
 }
