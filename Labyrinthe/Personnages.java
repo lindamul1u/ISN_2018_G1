@@ -3,7 +3,7 @@ public class Personnages {
 	private String nom;
 	private int x;
 	private int y;
-	
+	private plateau; //initialiser plateau
 	public Personnages(String nom, int x,int y){
 		this.nom=nom;
 		this.x=x;
@@ -43,7 +43,7 @@ public class Personnages {
 	/*private  boolean [] tabTouches ={false,false,false,false,false};
 	public void touchePresse(KeyEvent event) {	
 
-		//mise ‡ jour des variables pressees
+		//mise a jour des variables pressees
 		if(event.getKeyCode()==KeyEvent.VK_UP) tabTouches[0] = true;
 		if(event.getKeyCode()==KeyEvent.VK_LEFT) tabTouches[1] = true;
 		if(event.getKeyCode()==KeyEvent.VK_RIGHT) tabTouches[2] = true;
