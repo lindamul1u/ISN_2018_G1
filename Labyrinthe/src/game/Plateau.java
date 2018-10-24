@@ -9,8 +9,11 @@ public class Plateau {
 	private String mur="X";
 	private String chemin="-";
 	private String heros="0";
+	private String tresor="T";
+	private Tresor t;
 	private Heros h;
 	private char Commande;
+	
 
 	public Plateau(int n,int m,int nbrmurs) {
 		this.n=n;
@@ -29,6 +32,7 @@ public class Plateau {
 		}
 		murAleat(nbrmurs);// génere les murs aléat
 		System.out.println(toString());
+		t=new Tresor(this);
 		ajustement();
 		nbrcase();
 		h=new Heros(this);
@@ -221,6 +225,9 @@ public class Plateau {
 			plateau[i][j]=chemin;
 		}
 		
+	}
+	public String getTres() {
+		return tresor;
 	}
 	
 }
