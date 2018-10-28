@@ -6,8 +6,9 @@ public class Tresor {
 	private Plateau P;
 	
 	Tresor(Plateau P){
-		this.P=P; }
-	
+		this.P=P; 
+		placer();
+		System.out.println(x+" "+y);}	
 	private void placer() {
 		int n=P.getNblignes();
 		int m=P.getcolonnes();
@@ -15,7 +16,8 @@ public class Tresor {
 		y=0;
 		while(!accessible(x,y)) {
 			x=nbAleat(1,n-1);
-			y=nbAleat(1,n-1);
+			y=nbAleat(1,m-1);
+			
 		}
 		P.setPlateau(x, y, P.getTres());}
 	
@@ -49,6 +51,9 @@ public class Tresor {
 	}
 	public void setY(int y) {
 		this.y=y;
+	}
+	public void Victoire() {
+		
 	}
 
 }

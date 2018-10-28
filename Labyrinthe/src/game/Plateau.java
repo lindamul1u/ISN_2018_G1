@@ -1,44 +1,67 @@
 package game;
 
 public class Plateau {
-	private String[][] plateau;
-	private int n;
-	private int  m;
-	private int nbrmurs;
-	private int nbrcaselibre;
+
+	private String[][] plateau;//Matrice contenant l'information du plateau à l'instant n
+
+	//LES ENTIERS
+	private int n;//Nbr lignes
+	private int  m;//Nbr colones
+	private int nbrmurs;//Nbr murs
+	private int nbrcaselibre;//Nbr de case où le joueur peut se déplacer
+
+	//Codage des objets dans la matrice
 	private String mur="X";
 	private String chemin="-";
 	private String heros="0";
 	private String tresor="T";
+	//Les objets 
 	private Tresor t;
 	private Heros h;
+
+	//Communication entre le plateau et les objets
 	private char Commande;
-	
+	private int arret;
+
+	//Constructeur
 
 	public Plateau(int n,int m,int nbrmurs) {
-		this.n=n;
-		this.m=m;
-		
-		this.nbrmurs=nbrmurs;
-		plateau=new String[n][m];
 
-		for(int i=0;i<n;i++) {
-			for(int j=0;j<m;j++) {
-				if(!appartientPlateau(i,j))// Si mur ext
-					plateau[i][j]=mur;// On définit "X" comme étant les murs
-				else 
-					plateau[i][j]=chemin;// On définit " " comme étant les chemins
+		if(n>2&& m>2&& nbrmurs<=(n-2)*(m-2)) {//Condition de validité du plateau
+			this.n=n;
+			this.m=m;
+			this.nbrmurs=nbrmurs;
+			plateau=new String[n][m];
+			arret=0;
+			//Mise en place des murs extérieurs
+			for(int i=0;i<n;i++) {
+				for(int j=0;j<m;j++) {
+					if(!appartientPlateau(i,j))// Si mur ext
+						plateau[i][j]=mur;// On définit "X" comme étant les murs
+					else 
+						plateau[i][j]=chemin;// On définit " " comme étant les chemins
+				}
 			}
+
+			murAleat(nbrmurs);// place nbrmurs de manières aléatoire sur le plateau
+			ajustement();//ajustement du plateau afin de ne pas avoir de zone inaccessible par le joueur
+
+			t=new Tresor(this);
+			plateau[t.getX()][t.getY()]=tresor;//On place le trésore à sa place (voir classe Tresor)
+
+			nbrcase();//Calcul le nbr de case de déplacement et les murs
+
+			h=new Heros(this);
+			ajoutHeros();//place le héros sur le plateau (voir Héros)
 		}
-		murAleat(nbrmurs);// génere les murs aléat
-		System.out.println(toString());
-		t=new Tresor(this);
-		ajustement();
-		nbrcase();
-		h=new Heros(this);
-		ajoutHeros();
+		else {
+			System.out.println("Problème de dimenssionement");
+		}
 	}
-	//Vérifie que le couple (x,y) n'est pas mur ext
+	
+	/* Méthodes PRIVATE*/
+	//----------------------------
+	//Vérifie que le couple (x,y) n'est pas mur extérieur
 	private boolean appartientPlateau(int x,int y) {
 		if(x>0 && x<n-1 && y>0 && y<m-1) {
 			return true;
@@ -60,23 +83,12 @@ public class Plateau {
 		this.nbrcaselibre=S2;
 		this.nbrmurs=S1;
 	}
-	//Methode toString()
-	public String toString() {
-		String S="";
-		for(int i=0;i<n;i++) {
-			for(int j=0;j<m;j++) {
 
-				S+=plateau[i][j]+" ";
-			}
-			S+="\n";
-		}
-		return S;
-	}
 	//calcul nb aleat entier entre[Min,Max[ 
 	private int nbAleat(int Min,int Max) {
 		return Min + (int)(Math.random() * ((Max - Min) ));
 	}
-	
+
 	//génere les N murs sur le plateau de façon aléat
 	private void murAleat(int nbrmurs) {
 		int x=0;
@@ -95,72 +107,50 @@ public class Plateau {
 			}
 
 
-			plateau[x][y]="X";
+			plateau[x][y]=mur;
 		}
 	}
-
+	// modifie le plateau de manière à le rendre exploitable
+	private void ajustement() {
+		int[][] V1=voisin();//Matrice où V1[i][j]= le nombre de case de déplacement dispo au voisinage de plateau[i][j]
+		for(int i=1;i<n-1;i++) {
+			for(int j=1;j<m-1;j++) {
+				while(V1[i][j]<3) {//On considère qu'un plateau est ok si chaque case a au moins 3 voisins de type chemin
+					supprMur(i,j);// sinon on supprime un mur de manière aléatoire au voisinage de la case [i][j]
+					V1=voisin();//On recalcule V1
+				}
+			}
+		}
+	}
 	//Génère la matrice adjacent où une case compte pour voisin si celui-ci est "-"
 	private int[][] voisin() {
 		int[][] adj=new int[n][m];
-		//System.out.println(toString());
 		for(int i=0;i<n;i++) {
 			for(int j=0;j<m;j++) {
 				int S=0;
 				for(int l=-1;l<=1;l++) {
 					for(int m=-1;m<=1;m++) {
 						if( appartientPlateau(i+l,j+m) && plateau[i+l][j+m].equals(chemin)) {// Regarde dans les 8 directions
-							S+=1;
+							S+=1;// On vérifie que l'élement adjacent à la case (i,j) n'est pas un mur extérieur (out of range) et que celui-ci est un chemin
 						}
 					}
 				}
-				if( plateau[i][j].equals(chemin)) {
+				if( plateau[i][j].equals(chemin)) {//Si l'élement (i,j) est déjà un chemin alors S a compté (i,j) comme étant voisin de lui même
 					adj[i][j]=S-1;
 				}
 				else {
 					adj[i][j]=S;
 				}
 			}
-
 		}
 		return adj;}
 	// Supprime un mur sur une case adjacent de (i,j) de manière aléatoire
 	private void supprMur(int i,int j) {
 
-
-		//System.out.println(i+" "+j);
-
 		int xD=nbAleat(-1,2);
-		int yD=nbAleat(-1,2);
-		if(xD!=0) {
-			xD=xD/Math.abs(xD);
-		}
-		if(yD!=0) {
-			yD=yD/Math.abs(yD);
-		}
-
-		//System.out.println(xD +" "+yD);
-		//System.out.println(toString());
+		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
 		if(appartientPlateau(i+xD,j+yD))
-			plateau[i+xD][j+yD]=chemin;
-	}
-	// modifie le plateau de manière à le rendre exploitable
-	private void ajustement() {
-
-		int[][] V1=voisin();
-	
-
-		for(int i=1;i<n-1;i++) {
-			for(int j=1;j<m-1;j++) {
-				while(V1[i][j]<3) {//On considère qu'un plateau est ok si chaque case a 3 voisins " "
-					supprMur(i,j);
-					V1=voisin();
-				}
-			}
-
-		}
-
-	
-
+			plateau[i+xD][j+yD]=chemin;// L'élement adjacent de (i,j) n'est pas un mur extérieur on le supprime
 	}
 	//Affiche la matrice adjacent 
 	private void afficheVoisin(int[][] v) {
@@ -171,9 +161,27 @@ public class Plateau {
 			System.out.println("");
 		}
 	}
+	
+	
+	/*Methode public*/
+	//---------------------
+	//Methode toString()
+	public String toString() {
+		String S="";
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+
+				S+=plateau[i][j]+" ";
+			}
+			S+="\n";
+		}
+		return S;
+	}
+	//Permet d'insérer un objt dans la matrice à partir de son code
 	public void setPlateau(int i,int j,String s) {
 		plateau[i][j]=s;
 	}
+	// LES GET
 	public String[][] getPlateau(){
 		return plateau;
 	}
@@ -203,31 +211,36 @@ public class Plateau {
 		int yh=h.getY();
 		System.out.println(h);
 		plateau[xh][yh]=heros;
-		
+
 	}
 	public String getHerosS() {
 		return heros;
 	}
 	public void supprHeros() {
 		plateau[h.getX()][h.getY()]=chemin;
-				
+
 	}
+	// Gestion de déplacement du héros
 	public void setCommande(char c) {
 		Commande=c;
 		supprHeros();
-		h.Deplacement(Commande);
+		arret=h.Deplacement(Commande);
 		ajoutHeros();
-		
-		
+
+
+
 	}
+	//Permet de remplacer un élement par un chemin(déplacement ...)
 	public void remove(int i,int j) {
 		if(!plateau[i][j].equals(mur)) {
 			plateau[i][j]=chemin;
 		}
-		
+
 	}
 	public String getTres() {
 		return tresor;
 	}
-	
+	public int getArret() {
+		return arret;
+	}
 }

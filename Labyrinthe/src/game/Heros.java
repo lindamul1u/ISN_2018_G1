@@ -7,8 +7,38 @@ public class Heros {
 	public Heros(Plateau p) {
 		// TODO Auto-generated constructor stub
 		this.p=p;
-		PosInitialisation();
+		PosInitialisation();// place le héros de manière aléatoire à l'instant initiale (aléatoire)
 	}
+	private void PosInitialisation() {
+		String[][] M=p.getPlateau();
+		int n=p.getNblignes();
+		int m=p.getcolonnes();
+		int Nbrcaselibre=p.getNbrchemin();
+		int indice=nbAleat(1,Nbrcaselibre);
+		int S=0;
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				if(M[i][j].equals(p.getChemin())) {
+					S+=1;
+				}
+				if(S==indice) {//on place le héros à la kème case libre du plateau 
+					x=i;
+					y=j;
+					i=n;
+					break;
+				
+				}
+				
+			}
+		}
+	}
+
+	private int nbAleat(int Min,int Max) {
+		return Min + (int)(Math.random() * ((Max - Min) ));
+	}
+
+
+	//GET ET SET
 	public void setPos(int x,int y) {
 		this.x=x;
 		this.y=y;
@@ -28,34 +58,18 @@ public class Heros {
 	public String toString() {
 		return x+" "+y;
 	}
-	public void PosInitialisation() {
-		String[][] M=p.getPlateau();
-		int n=p.getNblignes();
-		int m=p.getcolonnes();
-		int Nbrcaselibre=p.getNbrchemin();
-		int indice=nbAleat(1,Nbrcaselibre);
-		int S=0;
-		for(int i=0;i<n;i++) {
-			for(int j=0;j<m;j++) {
-				if(M[i][j].equals(p.getChemin())) {
-					S+=1;
-				}
-				if(S==indice) {
-					x=i;
-					y=j;
-					i=n;
-					break;
-				
-				}
-				
-			}
-		}
-	}
-	public void Deplacement(char c) {
+
+	//Deplacement du héros sur le pavé num
+	
+	public int Deplacement(char c) {// Attention Retournement Graphique
 		p.remove(x, y);
 		if(c=='7') {
 			if(p.getPlateau()[x-1][y-1].equals(p.getChemin())) {
+				setPos(x-1,y-1);// Si l'élement (x-1,y-1) est un chemin on déplace le héros 
+			}
+			else if(p.getPlateau()[x-1][y-1].equals(p.getTres())) {//Si c'est un trésort on retourne 1 (variable arret de plateau)
 				setPos(x-1,y-1);
+				return 1;
 			}
 			
 		}
@@ -63,17 +77,29 @@ public class Heros {
 			if(p.getPlateau()[x][y-1].equals(p.getChemin())) {
 				setPos(x,y-1);
 			}
+			else if(p.getPlateau()[x][y-1].equals(p.getTres())) {
+				setPos(x,y-1);
+				return 1;
+			}
 			
 		}
 		else if(c=='9') {
 			if(p.getPlateau()[x+1][y-1].equals(p.getChemin())) {
 				setPos(x+1,y-1);
 			}
+			else if(p.getPlateau()[x+1][y-1].equals(p.getTres())) {
+				setPos(x+1,y-1);
+				return 1;
+			}
 			
 		}
 		else if(c=='4') {
 			if(p.getPlateau()[x-1][y].equals(p.getChemin())) {
 				setPos(x-1,y);
+			}
+			else if(p.getPlateau()[x-1][y].equals(p.getTres())) {
+				setPos(x-1,y);
+				return 1;
 			}
 			
 		}
@@ -82,11 +108,19 @@ public class Heros {
 				
 				setPos(x+1,y);
 			}
+			else if(p.getPlateau()[x+1][y].equals(p.getTres())) {
+				setPos(x+1,y);
+				return 1;
+			}
 			
 		}
 		else if(c=='1') {
 			if(p.getPlateau()[x-1][y+1].equals(p.getChemin())) {
 				setPos(x-1,y+1);
+			}
+			else if(p.getPlateau()[x-1][y+1].equals(p.getTres())) {
+				setPos(x-1,y+1);
+				return 1;
 			}
 			
 		}
@@ -95,6 +129,10 @@ public class Heros {
 				setPos(x,y+1);
 				
 			}
+			else if(p.getPlateau()[x][y+1].equals(p.getTres())) {
+				setPos(x,y+1);
+				return 1;
+			}
 			
 		}
 		else if(c=='3') {
@@ -102,18 +140,18 @@ public class Heros {
 				setPos(x+1,y+1);
 				
 			}
+			else if(p.getPlateau()[x+1][y+1].equals(p.getTres())) {
+				setPos(x+1,y+1);
+				return 1;
+			}
 			
 		}
 		else {
 		System.out.println("Mur !");
 		}
 		p.setPlateau(x, y, p.getHerosS());
+		return 0;
 	
 	}
-	private int nbAleat(int Min,int Max) {
-		return Min + (int)(Math.random() * ((Max - Min) ));
-	}
-
-
 
 }

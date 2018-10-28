@@ -4,16 +4,28 @@ import java.awt.event.*;
 
 import javax.swing.JPanel;  
 public class Graphique extends JPanel {
-	  private int posX = 50;
-	  private int posY = 50;
+	  private int posX;
+	  private int posY ;
 	  private Color c;
+	  private int Arret;
 	  Graphique(Color c){
 		  this.c=c;
+		  Arret=0;
 	  }
 
 	  public void paintComponent(Graphics g){
-	    g.setColor(c);
-	    g.fillOval(posX, posY, 10,10);
+		if(Arret==0) {
+			 g.setColor(c);
+			    g.fillRect(posX, posY, 10,10);
+			
+		}
+		else {
+			g.drawString("Fin du jeu",1000,10);
+		}
+	   
+	  }
+	  public void setArret(int a) {
+		  this.Arret=a;
 	  }
 
 	  public int getPosX() {

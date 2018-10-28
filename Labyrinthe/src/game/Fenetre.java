@@ -10,29 +10,38 @@ import javax.swing.*;
 import  java.awt.*;
 public class Fenetre extends JFrame implements KeyListener{
 	private Graphique gr ;
-	private JPanel pan;
-	private TextArea area;
+	
 	private Plateau p;
 	private char Commande;
-
-	int x0=50;
-	int y0=50;
+	private int longueur;
+	private int largeur;
+	private int x0;
+	private int y0;
 	public Fenetre(Plateau p){     
-		pan=new JPanel();
-		this.p=p;
-		gr=new Graphique(Color.red);
 	
-        area=new TextArea();  
-		area.addKeyListener(this); 
-	area.setBounds(100,100,10,10);
-		gr.add(area);
-		this.setSize(300, 300);
+		this.p=p;
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		this.setUndecorated(false);
+		this.setVisible(true); 
+		longueur=this.getHeight();
+		largeur=this.getWidth();
+		 x0=50;
+		 y0=50;
+		gr=new Graphique(Color.red);
+		gr.setPosX(x0);
+		gr.setPosY(y0);
+	
+   
+		this.addKeyListener(this); 
+
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		this.setContentPane(gr);
-		this.setVisible(true);
-		this.setSize(1080, 720);
-		setVisible(true);  
+	
+		
 		go();
+		
+		
 
 	}
 	private void go(){
@@ -79,6 +88,21 @@ public class Fenetre extends JFrame implements KeyListener{
 						e.printStackTrace();
 					}
 				}
+				else if(mat[i][j].equals(p.getTres())) {
+					x=x0+i*10;
+					y=y0+j*10;
+					
+					gr.setCol(Color.yellow);
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+
+					try {
+						Thread.sleep(30);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
 			}
 
 
@@ -99,6 +123,7 @@ public class Fenetre extends JFrame implements KeyListener{
 		gr.setPosX(xh);
 		gr.setPosY(yh);
 		gr.repaint();
+		
 		try {
 			Thread.sleep(20);
 		} catch (InterruptedException e) {
@@ -114,18 +139,24 @@ public class Fenetre extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 		//System.out.println(p);
 		Commande=arg0.getKeyChar();
+	
 		p.setCommande(Commande);
 		int xh=p.getHeros().getX();
 		int yh=p.getHeros().getY();
 		System.out.println(xh+" "+yh);
 		xh=xh*10+x0;
 		yh=yh*10+y0;
-		String[][] mat=p.getPlateau();
+		
 
 		gr.setCol(Color.blue);
 		gr.setPosX(xh);
 		gr.setPosY(yh);
-		gr.repaint();}
+		gr.repaint();
+		if(p.getArret()==1) {
+			gr.setArret(1);
+			gr.repaint();
+			}
+		}
 	
 
 	@Override
