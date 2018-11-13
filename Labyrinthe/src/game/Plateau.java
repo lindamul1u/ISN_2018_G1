@@ -23,7 +23,7 @@ public class Plateau {
 	private Tresor t;
 	private Heros h;
 	private Vector <Monstres> Vmonstre;
-
+	private int[][] Voisin;
 	//Communication entre le plateau et les objets
 	private char Commande;
 	private int arret;
@@ -61,10 +61,13 @@ public class Plateau {
 			ajoutHeros();//place le héros sur le plateau (voir Héros)
 			Vmonstre=new Vector <Monstres>();
 			ajoutMonstres(M);
+			
+
 		}
 		else {
 			System.out.println("Problème de dimenssionement");
 		}
+		
 	}
 	
 	/* Méthodes PRIVATE*/
@@ -129,9 +132,22 @@ public class Plateau {
 				}
 			}
 		}
+		afficheVoisin(V1);
 	}
+	public boolean nombreVoisinCorrect(int[][] v,int i,int j) {
+		
+		if(v[i][j]<=2) {//On considère qu'un plateau est ok si chaque case a au moins 3 voisins de type chemin
+			System.out.println(i+ " "+j+" "+v[i][j]);
+
+			return false;
+		
+	
+}
+return true;
+
+}
 	//Génère la matrice adjacent où une case compte pour voisin si celui-ci est "-"
-	private int[][] voisin() {
+	public int[][] voisin() {
 		int[][] adj=new int[n][m];
 		for(int i=0;i<n;i++) {
 			for(int j=0;j<m;j++) {
@@ -144,13 +160,15 @@ public class Plateau {
 					}
 				}
 				if( plateau[i][j].equals(chemin)) {//Si l'élement (i,j) est déjà un chemin alors S a compté (i,j) comme étant voisin de lui même
-					adj[i][j]=S-1;
+					adj[i][j]=S;
+					
 				}
 				else {
 					adj[i][j]=S;
 				}
 			}
 		}
+		this.Voisin=adj;
 		return adj;}
 	// Supprime un mur sur une case adjacent de (i,j) de manière aléatoire
 	private void supprMur(int i,int j) {
@@ -169,6 +187,10 @@ public class Plateau {
 			System.out.println("");
 		}
 	}
+	public int[][] getVoisin() {
+		return Voisin;
+	}
+	
 	
 	
 	/*Methode public*/
@@ -313,5 +335,7 @@ public class Plateau {
 	public void STOP() {
 		arret=1;
 	}
-	
+	public Tresor getTresor() {
+		return this.t;
+	}
 }
