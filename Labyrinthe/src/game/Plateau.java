@@ -1,5 +1,8 @@
 package game;
 
+import java.awt.Color;
+import java.util.Vector;
+
 public class Plateau {
 
 	private String[][] plateau;//Matrice contenant l'information du plateau à l'instant n
@@ -15,13 +18,16 @@ public class Plateau {
 	private String chemin="-";
 	private String heros="0";
 	private String tresor="T";
+	private String monstre="M";
 	//Les objets 
 	private Tresor t;
 	private Heros h;
+	private Vector <Monstres> Vmonstre;
 
 	//Communication entre le plateau et les objets
 	private char Commande;
 	private int arret;
+	private int M=10;
 
 	//Constructeur
 
@@ -53,6 +59,8 @@ public class Plateau {
 
 			h=new Heros(this);
 			ajoutHeros();//place le héros sur le plateau (voir Héros)
+			Vmonstre=new Vector <Monstres>();
+			ajoutMonstres(M);
 		}
 		else {
 			System.out.println("Problème de dimenssionement");
@@ -62,7 +70,7 @@ public class Plateau {
 	/* Méthodes PRIVATE*/
 	//----------------------------
 	//Vérifie que le couple (x,y) n'est pas mur extérieur
-	private boolean appartientPlateau(int x,int y) {
+	public boolean appartientPlateau(int x,int y) {
 		if(x>0 && x<n-1 && y>0 && y<m-1) {
 			return true;
 		}
@@ -209,26 +217,84 @@ public class Plateau {
 	public void ajoutHeros() {
 		int xh=h.getX();
 		int yh=h.getY();
-		System.out.println(h);
+		
 		plateau[xh][yh]=heros;
 
 	}
 	public String getHerosS() {
 		return heros;
-	}
+	}	
 	public void supprHeros() {
 		plateau[h.getX()][h.getY()]=chemin;
 
-	}
+	}	
 	// Gestion de déplacement du héros
 	public void setCommande(char c) {
 		Commande=c;
 		supprHeros();
 		arret=h.Deplacement(Commande);
 		ajoutHeros();
+	}
+	
+	public String getMonstreStr() {
+		return monstre;
+	}
+	public Vector<Monstres> getMonstre(){
+		return Vmonstre;
+	}
+	public void setMonstres(int id) {
+		Vector<Monstres> New=new Vector<Monstres>();
+		for(int i=0;i<Vmonstre.size();i++) {
+			if(Vmonstre.get(i).id!=id) {
+				New.add(Vmonstre.get(i));
+			}
+		}
+		Vmonstre=New;
+		
+	}
+	
+	private void ajoutMonstres(int M) {
+	
+		for(int i=0;i<(int)M/2;i++) {
+			Vmonstre.add(new Monstreintel_simple(this,i));
+			Monstres m2= Vmonstre.get(i);
+			plateau[m2.getX()][m2.getY()]=monstre;
+			
+		}
+		/*for(int i=(int) M/2;i<M;i++) {
+			Vmonstre.add(new Monstrealea_simple(this,i));
+			Monstres m=(Monstrealea_simple) Vmonstre.get(i);
+			plateau[m.getX()][m.getY()]=monstre;
+		}*/
+	}
+	private void supprMonstre(Monstres m) {
+		int xm=m.getX();int ym=m.getY();
+		plateau[xm][ym]=chemin;
+		
+	}
+	public void DeplacementMonstre() {
+		
+		for(int i=0;i<Vmonstre.size();i++) {
+			
+			Monstres m=(Monstres) Vmonstre.get(i);
+			supprMonstre(m);
+			boolean a=m.deplacer();
+			
+			if(a==true) {
+				System.out.println(m);
+				setMonstres(m.id);
+			
 
-
-
+				System.out.println("Mort "+m+" "+m.id);
+				
+			}
+			else {
+				System.out.println("Vivant "+m);
+			//Repositione le monstre de manière aléatoire
+			int xm=m.getX();int ym=m.getY();
+			plateau[xm][ym]=monstre;}
+		}
+		
 	}
 	//Permet de remplacer un élement par un chemin(déplacement ...)
 	public void remove(int i,int j) {
@@ -243,4 +309,9 @@ public class Plateau {
 	public int getArret() {
 		return arret;
 	}
+
+	public void STOP() {
+		arret=1;
+	}
+	
 }

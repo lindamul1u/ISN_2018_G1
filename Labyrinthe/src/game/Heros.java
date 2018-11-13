@@ -3,11 +3,12 @@ package game;
 public class Heros {
 	private int x,y;
 	private Plateau p;
-
+	private int Point_vie;
 	public Heros(Plateau p) {
 		// TODO Auto-generated constructor stub
 		this.p=p;
 		PosInitialisation();// place le héros de manière aléatoire à l'instant initiale (aléatoire)
+		Point_vie=10;
 	}
 	private void PosInitialisation() {
 		String[][] M=p.getPlateau();
@@ -63,6 +64,10 @@ public class Heros {
 	
 	public int Deplacement(char c) {// Attention Retournement Graphique
 		p.remove(x, y);
+		if(Point_vie==0) {
+			
+			return 1;
+		}
 		if(c=='7') {
 			if(p.getPlateau()[x-1][y-1].equals(p.getChemin())) {
 				setPos(x-1,y-1);// Si l'élement (x-1,y-1) est un chemin on déplace le héros 
@@ -149,9 +154,16 @@ public class Heros {
 		else {
 		System.out.println("Mur !");
 		}
-		p.setPlateau(x, y, p.getHerosS());
+		
+		
+	
 		return 0;
 	
 	}
-
+	public int getLife() {
+		return Point_vie;
+	}
+	public void setLife(int p) {
+		Point_vie=p;
+	}
 }

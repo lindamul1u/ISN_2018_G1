@@ -3,7 +3,7 @@ package game;
 import java.awt.TextArea;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
+import java.util.Vector;
 
 import javax.swing.*;
 
@@ -21,6 +21,7 @@ public class Fenetre extends JFrame implements KeyListener{
 	
 		this.p=p;
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//this.setSize(500,500);
 		this.setUndecorated(false);
 		this.setVisible(true); 
 		longueur=this.getHeight();
@@ -115,21 +116,8 @@ public class Fenetre extends JFrame implements KeyListener{
 		// TODO Auto-generated method stub
 
 		Commande=arg0.getKeyChar();
-		int xh=p.getHeros().getX();
-		int yh=p.getHeros().getY();
-		xh=xh*10+x0;
-		yh=yh*10+y0;
-		gr.setCol(this.getBackground());
-		gr.setPosX(xh);
-		gr.setPosY(yh);
-		gr.repaint();
-		
-		try {
-			Thread.sleep(20);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
+		depainHeros();
+
 
 
 	}
@@ -138,24 +126,10 @@ public class Fenetre extends JFrame implements KeyListener{
 	public void keyReleased(KeyEvent arg0) {
 		// TODO Auto-generated method stub
 		//System.out.println(p);
-		Commande=arg0.getKeyChar();
-	
+		depainHeros();
 		p.setCommande(Commande);
-		int xh=p.getHeros().getX();
-		int yh=p.getHeros().getY();
-		System.out.println(xh+" "+yh);
-		xh=xh*10+x0;
-		yh=yh*10+y0;
-		
+		painHeros();
 
-		gr.setCol(Color.blue);
-		gr.setPosX(xh);
-		gr.setPosY(yh);
-		gr.repaint();
-		if(p.getArret()==1) {
-			gr.setArret(1);
-			gr.repaint();
-			}
 		}
 	
 
@@ -167,4 +141,74 @@ public class Fenetre extends JFrame implements KeyListener{
 	public char getCommande() {
 		return Commande;
 	}
+	public void painMonstre(Color c) {
+		Vector<Monstres>Vmonstre=p.getMonstre();
+		for(Monstres x:Vmonstre) {
+			
+			int xm=x.getX();
+			int ym=x.getY();
+			xm=xm*10+x0;
+			ym=ym*10+y0;
+			gr.setCol(c);
+			gr.setPosX(xm);
+			gr.setPosY(ym);
+			gr.repaint();
+
+			try {
+				Thread.sleep(100/(p.getMonstre().size())^2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	
+		}
+		
+	}
+	public void depainHeros() {
+		
+		int xh=p.getHeros().getX();
+		int yh=p.getHeros().getY();
+	
+		xh=xh*10+x0;
+		yh=yh*10+y0;
+		
+
+		gr.setCol(this.getBackground());
+		gr.setPosX(xh);
+		gr.setPosY(yh);
+		gr.repaint();
+		
+	
+		if(p.getArret()==1) {
+			gr.setArret(1);
+			gr.repaint();
+			}
+		
+		
+	}
+	
+public void painHeros() {
+		
+		int xh=p.getHeros().getX();
+		int yh=p.getHeros().getY();
+		System.out.println(xh+" "+yh);
+		xh=xh*10+x0;
+		yh=yh*10+y0;
+		
+
+		gr.setCol(Color.blue);
+		gr.setPosX(xh);
+		gr.setPosY(yh);
+		gr.repaint();
+		
+	
+		if(p.getArret()==1) {
+			gr.setArret(1);
+			gr.repaint();
+			}
+		
+		
+	}
+	
+		
+	
 }
