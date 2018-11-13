@@ -3,7 +3,7 @@ package game;
 public class Tresor {
 	
 	private int x,y;
-	private Plateau P;
+	private static Plateau P;
 	
 	Tresor(Plateau P){
 		this.P=P; 
@@ -21,7 +21,7 @@ public class Tresor {
 		}
 		P.setPlateau(x, y, P.getTres());}
 	
-	private boolean accessible(int x, int y) {
+	static boolean accessible(int x, int y) {
 		if(P.getPlateau()[x][y].equals(P.getChemin())) {
 			return true;
 		
