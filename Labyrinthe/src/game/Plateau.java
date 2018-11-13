@@ -22,7 +22,7 @@ public class Plateau {
 	//Les objets 
 	private Tresor t;
 	private Heros h;
-	private Vector <Monstres> Vmonstre;
+	private Vector <monstres> Vmonstre;
 	private int[][] Voisin;
 	//Communication entre le plateau et les objets
 	private char Commande;
