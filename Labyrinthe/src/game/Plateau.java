@@ -27,7 +27,7 @@ public class Plateau {
 	//Communication entre le plateau et les objets
 	private char Commande;
 	private int arret;
-	private int M=10;
+	private int M=3;
 
 	//Constructeur
 
@@ -283,11 +283,11 @@ return true;
 			plateau[m2.getX()][m2.getY()]=monstre;
 			
 		}
-		/*for(int i=(int) M/2;i<M;i++) {
+		for(int i=(int) M/2;i<M;i++) {
 			Vmonstre.add(new Monstrealea_simple(this,i));
 			Monstres m=(Monstrealea_simple) Vmonstre.get(i);
 			plateau[m.getX()][m.getY()]=monstre;
-		}*/
+		}
 	}
 	private void supprMonstre(Monstres m) {
 		int xm=m.getX();int ym=m.getY();
