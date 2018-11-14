@@ -3,12 +3,14 @@ package game;
 public class Heros {
 	private int x,y;
 	private Plateau p;
-	private static int Point_vie;
+	private int Point_vie;
+	private int[] depTest;
 	public Heros(Plateau p) {
 		// TODO Auto-generated constructor stub
 		this.p=p;
 		PosInitialisation();// place le héros de manière aléatoire à l'instant initiale (aléatoire)
 		Point_vie=10;
+		depTest=new int[2];
 	}
 	private void PosInitialisation() {
 		String[][] M=p.getPlateau();
@@ -71,6 +73,8 @@ public class Heros {
 		if(c=='7') {
 			if(p.getPlateau()[x-1][y-1].equals(p.getChemin())) {
 				setPos(x-1,y-1);// Si l'élement (x-1,y-1) est un chemin on déplace le héros 
+				setDEPTEST(-1,-1);
+				
 			}
 			else if(p.getPlateau()[x-1][y-1].equals(p.getTres())) {//Si c'est un trésort on retourne 1 (variable arret de plateau)
 				setPos(x-1,y-1);
@@ -81,18 +85,25 @@ public class Heros {
 		else if(c=='8') {
 			if(p.getPlateau()[x][y-1].equals(p.getChemin())) {
 				setPos(x,y-1);
+				setDEPTEST(0,-1);
+
 			}
 			else if(p.getPlateau()[x][y-1].equals(p.getTres())) {
 				setPos(x,y-1);
+				
 				return 1;
 			}
 			
 		}
 		else if(c=='9') {
 			if(p.getPlateau()[x+1][y-1].equals(p.getChemin())) {
+				setDEPTEST(1,-1);
+
 				setPos(x+1,y-1);
+				setDEPTEST(1,-1);
 			}
 			else if(p.getPlateau()[x+1][y-1].equals(p.getTres())) {
+				
 				setPos(x+1,y-1);
 				return 1;
 			}
@@ -101,6 +112,7 @@ public class Heros {
 		else if(c=='4') {
 			if(p.getPlateau()[x-1][y].equals(p.getChemin())) {
 				setPos(x-1,y);
+				setDEPTEST(-1,0);
 			}
 			else if(p.getPlateau()[x-1][y].equals(p.getTres())) {
 				setPos(x-1,y);
@@ -112,6 +124,7 @@ public class Heros {
 			if(p.getPlateau()[x+1][y].equals(p.getChemin())) {
 				
 				setPos(x+1,y);
+				setDEPTEST(1,0);
 			}
 			else if(p.getPlateau()[x+1][y].equals(p.getTres())) {
 				setPos(x+1,y);
@@ -122,6 +135,7 @@ public class Heros {
 		else if(c=='1') {
 			if(p.getPlateau()[x-1][y+1].equals(p.getChemin())) {
 				setPos(x-1,y+1);
+				setDEPTEST(-1,1);
 			}
 			else if(p.getPlateau()[x-1][y+1].equals(p.getTres())) {
 				setPos(x-1,y+1);
@@ -132,6 +146,7 @@ public class Heros {
 		else if(c=='2') {
 			if(p.getPlateau()[x][y+1].equals(p.getChemin())) {
 				setPos(x,y+1);
+				setDEPTEST(0,1);
 				
 			}
 			else if(p.getPlateau()[x][y+1].equals(p.getTres())) {
@@ -143,7 +158,7 @@ public class Heros {
 		else if(c=='3') {
 			if(!p.getPlateau()[x+1][y+1].equals(p.getMurs())) {
 				setPos(x+1,y+1);
-				
+				setDEPTEST(1,1);
 			}
 			else if(p.getPlateau()[x+1][y+1].equals(p.getTres())) {
 				setPos(x+1,y+1);
@@ -160,10 +175,17 @@ public class Heros {
 		return 0;
 	
 	}
-	public static int getLife() {
+	public void setDEPTEST(int i,int j) {
+		depTest[0]=i;
+		depTest[1]=j;
+	}
+	public int[] getDeptest(){
+		return depTest;
+	}
+	public int getLife() {
 		return Point_vie;
 	}
-	public static void setLife(int p) {
+	public void setLife(int p) {
 		Point_vie=p;
 	}
 }

@@ -1,23 +1,35 @@
-package game;
 
-public abstract class Monstres {
-	int id;
+public class monstres {
 	public int x;
 	public int y;
 	private int point_de_vie;
-	protected Plateau p;
-
-	public Monstres(Plateau p,int id) {
-		// TODO Auto-generated constructor stub
-		this.p=p;
-		point_de_vie=1;
-		this.id=id;
-		PosInitialisation();
-		
+	private Plateau p;
+	
+	public monstres(int x, int y, int point_de_vie) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.point_de_vie = point_de_vie;
 	}
-	protected int nbAleat(int Min,int Max) {
-		return Min + (int)(Math.random() * ((Max - Min) ));
+	public int getX() {
+		return x;
 	}
+	public void setX(int x) {
+		this.x = x;
+	}
+	public int getY() {
+		return y;
+	}
+	public void setY(int y) {
+		this.y = y;
+	}
+	public int getPoint_de_vie() {
+		return point_de_vie;
+	}
+	public void setPoint_de_vie(int point_de_vie) {
+		this.point_de_vie = point_de_vie;
+	}
+	
 	public void PosInitialisation() {
 		String[][] M=p.getPlateau();
 		int n=p.getNblignes();
@@ -35,67 +47,52 @@ public abstract class Monstres {
 					y=j;
 					i=n;
 					break;
-
+				
 				}
-
+				
 			}
 		}
+}
+	private int nbAleat(int Min,int Max) {
+		return 2*Min + (int)(Math.random() * ((Max*10 - Min*9) ));
 	}
-	public void Aleatoire_deplacement() {
-
-		int xD=nbAleat(-1,2);
-		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
-		if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
-			setPos(x+xD,y+yD);
+	public void se_deplacer(){ //déplacement du monstre dans une direction aléatoire
+		double o=Math.random()*4;
+		
+		int l=(int)o;
+		if(l==0) {
+			x=x-1;
+			
 		}
+		else if(l==1) {
+			y=y+1;
+			
+		}
+		else if(l==2) {
+			x=x+1;
+		}
+		else {
+			y=y-1;
+		}
+			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 	}
 
-
-	public abstract boolean deplacer();
-	public int getX() {
-		return x;
-	}
-	public String toString() {
-		return x +" "+y+" id :"+id;
-	}
-	public void setX(int x) {
-		this.x = x;
-	}
-	public int getY() {
-		return y;
-	}
-	public void setY(int y) {
-		this.y = y;
-	}
-	public int getPoint_de_vie() {
-		return point_de_vie;
-	}
-	public void setPoint_de_vie(int point_de_vie) {
-		this.point_de_vie = point_de_vie;
-	}
-	public void setPos(int x,int y) {
-		this.x=x;
-		this.y=y;
-	}
-	protected int distanceToHerosX() {
-		return Math.abs(this.x-p.getHeros().getX());
-	}
-	protected int distanceToHerosY() {
-		return Math.abs(this.y-p.getHeros().getY());
-		
-	}
-	
-	public boolean Attaquer() {
-	
-		if(distanceToHerosX()<=1 &&  distanceToHerosY()<=1) {
-			int life=p.getHeros().getLife();
-			if(life>0) {
-				p.getHeros().setLife(life-1);
-			}
-	
-			return  true;
-		}
-		return false;
-	}
 }
