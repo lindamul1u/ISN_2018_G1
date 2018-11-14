@@ -3,7 +3,7 @@ package game;
 public class Heros {
 	private int x,y;
 	private Plateau p;
-	private int Point_vie;
+	private static int Point_vie;
 	public Heros(Plateau p) {
 		// TODO Auto-generated constructor stub
 		this.p=p;
@@ -160,10 +160,10 @@ public class Heros {
 		return 0;
 	
 	}
-	public int getLife() {
+	public static int getLife() {
 		return Point_vie;
 	}
-	public void setLife(int p) {
+	public static void setLife(int p) {
 		Point_vie=p;
 	}
 }
