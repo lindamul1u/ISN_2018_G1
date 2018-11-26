@@ -31,17 +31,17 @@ public class Principale {
 		System.out.println(h);
 
 		f.coeur("coeur.png");
-		f.painMonstre("monstre.png");
-		
+		f.painMonstre("monstre1.png");
+		f.painMonstre("monstre2.png");
 
 		f.coeur("fond.png");
-
-
+		/*
+		f.painHeros2("monstre1.png");
+		f.depainHeros();
+		f.painHeros2("monstre2.png");
+*/
 		f.painMonstre("chemin.png");
 		p.DeplacementMonstre();
 	}
-	
-		
-		
 	}
 	}

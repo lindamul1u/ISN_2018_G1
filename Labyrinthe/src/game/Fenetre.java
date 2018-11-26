@@ -286,7 +286,7 @@ public void coeur(String s) {
 			gr.repaint();
 
 			try {
-				Thread.sleep(300);
+				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -341,7 +341,32 @@ public void painHeros() {
 		
 		
 	}
+public void painHeros2(String s) {
 	
+	int xh=p.getHeros().getX();
+	int yh=p.getHeros().getY();
+
+	xh=xh*30+x0;
+	yh=yh*30+y0;
+	
+
+	gr.setImage(s);
+	gr.setPosX(xh);
+	gr.setPosY(yh);
+	gr.repaint();
+	
+
+	if(p.getArret()==1) {
+		gr.setArret(1);
+		gr.repaint();
+		}
+	try {
+		Thread.sleep(200);
+	} catch (InterruptedException e) {
+		e.printStackTrace();
+	}
+	
+}
 		
 	
 }
