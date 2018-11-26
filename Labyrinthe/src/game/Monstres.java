@@ -87,14 +87,62 @@ public abstract class Monstres {
 	}
 	
 	public boolean Attaquer() {
-	
+	Heros h=p.getHeros();
 		if(distanceToHerosX()<=1 &&  distanceToHerosY()<=1) {
-			int life=p.getHeros().getLife();
+			int life=h.getLife();
 			if(life>0) {
-				p.getHeros().setLife(life-1);
+				h.setLife(life-1);
 			}
 	
 			return  true;
+		}
+		String[][] m=p.getPlateau();
+		if(h.possedeAttaqueDist()) {
+			System.out.println("Attaque distance disponible !!!!!!!!!!!");
+			for(int i=x+1;i<m.length;i++) {
+				if(m[i][this.y].equals(p.mur)) {
+					break;
+					}
+					else if(m[i][this.y].equals(p.heros)) {
+						System.out.println("Attaque !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+						h.removeAttdist();
+
+						return true;
+					}
+			}
+			for(int i=x-1;i>=0;i--) {
+				if(m[i][this.y].equals(p.mur)) {
+					break;
+					}
+					else if(m[i][this.y].equals(p.heros)) {
+						System.out.println("Attaque !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+						h.removeAttdist();
+
+						return true;
+					}
+			}
+			for(int i=y+1;i<m[0].length;i++) {
+				if(m[this.x][i].equals(p.mur)) {
+					break;
+					}
+					else if(m[this.x][i].equals(p.heros)) {
+						System.out.println("Attaque !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+						h.removeAttdist();
+
+						return true;
+					}
+			}
+			for(int i=y-1;i>=0;i--) {
+				if(m[this.x][i].equals(p.mur)) {
+					break;
+					}
+					else if(m[this.x][i].equals(p.heros)) {
+						System.out.println("Attaque !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+						h.removeAttdist();
+
+						return true;
+					}
+			}
 		}
 		return false;
 	}

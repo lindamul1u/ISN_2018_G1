@@ -66,8 +66,8 @@ class Testplateau {
 		Plateau p=new Plateau(10,10,50);
 		Tresor t=p.getTresor();
 		String[][] pl=p.getPlateau();
-		int xt=t.getX();
-		int yt=t.getY();
+		int xt=-1;
+		int yt=-1;
 		for(int i=0;i<pl.length;i++) {
 			for(int j=0;j<pl[0].length;j++) {
 				if(pl[i][j]==p.getTres()) {
@@ -94,12 +94,10 @@ class Testplateau {
 		int yh=h.getY();
 		char commande = 8;
 		h.Deplacement(commande);
-		int[] dep=h.getDeptest();
+	
 		pl=p.getPlateau();
 		int xdh=h.getX();
 		int ydh=h.getY();
-		assertEquals(xdh,dep[0]+xh);
-		assertEquals(ydh,dep[1]+yh);
 
 
 	}

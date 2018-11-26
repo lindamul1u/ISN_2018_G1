@@ -1,7 +1,11 @@
 package game;
 import java.awt.*;  
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;  
 public class Graphique extends JPanel {
 	  private int posX;
@@ -13,10 +17,24 @@ public class Graphique extends JPanel {
 		  Arret=0;
 	  }
 
+	    private BufferedImage image;
+
+	    public void setImage(String s){
+	        try {
+				this.image = image = ImageIO.read(new File(s));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			};
+	    }
+	    public Image getImage(Image image){
+	        return image;
+	    }
+	    
 	  public void paintComponent(Graphics g){
 		if(Arret==0) {
-			 g.setColor(c);
-			    g.fillRect(posX, posY, 10,10);
+			
+			    g.drawImage(image, posX,posY,null);
 			
 		}
 		else {

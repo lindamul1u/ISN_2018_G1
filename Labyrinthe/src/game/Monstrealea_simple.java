@@ -2,7 +2,7 @@ package game;
 public class Monstrealea_simple extends Monstres {
 	
 	public Monstrealea_simple(Plateau p,int id) {
-		super(p,id);
+	super(p,id);
 	}
 
 	

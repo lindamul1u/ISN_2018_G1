@@ -8,7 +8,7 @@ public class Tresor {
 	Tresor(Plateau P){
 		this.P=P; 
 		placer();
-		System.out.println(x+" "+y);}	
+	}	
 	private void placer() {
 		int n=P.getNblignes();
 		int m=P.getcolonnes();
