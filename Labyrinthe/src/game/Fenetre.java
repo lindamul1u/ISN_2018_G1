@@ -24,9 +24,9 @@ public class Fenetre extends JFrame implements KeyListener{
 	public Fenetre(Plateau p){     
 	
 		this.p=p;
-		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+		//this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
 		
-		//this.setSize(500,500);
+		this.setSize(1000,1000);
 		this.setUndecorated(false);
 		this.setVisible(true); 
 		longueur=this.getHeight();
@@ -275,6 +275,31 @@ public void coeur(String s) {
 	public void painMonstre(String s) {
 		Vector<Monstres>Vmonstre=p.getMonstre();
 		for(Monstres x:Vmonstre) {
+			
+			int xm=x.getX();
+			int ym=x.getY();
+			xm=xm*30+x0;
+			ym=ym*30+y0;
+			gr.setImage(s);
+			gr.setPosX(xm);
+			gr.setPosY(ym);
+			gr.repaint();
+
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	
+		}
+		
+		
+		
+		
+	}
+	public void painFant(String s) {
+		Vector<Monstres>VF=p.getFantome();
+		for(Monstres x:VF) {
 			
 			int xm=x.getX();
 			int ym=x.getY();

@@ -11,8 +11,7 @@ public class Principale {
 		Plateau p=new Plateau(10,10,50);//Création du plateau (nbr ligne,colones,nbr murs obstacle)n
 		//System.out.println(p);
 		System.out.println(p);
-		Fenetre f=new Fenetre(p);//Fenetre d'affichage
-		char Commande=f.getCommande();
+	
 		
 	while (true) {
 		Heros h=p.getHeros();
@@ -30,19 +29,14 @@ public class Principale {
 	System.out.println("");*/
 		System.out.println(h);
 
-		f.coeur("coeur.png");
-		f.painMonstre("monstre1.png");
-		f.painMonstre("monstre2.png");
-		f.painMonstre("monstre3.png");
-
-		f.coeur("fond.png");
+	
 		/*
 		f.painHeros2("monstre1.png");
 		f.depainHeros();
 		f.painHeros2("monstre2.png");
 */
-		f.painMonstre("chemin.png");
 		p.DeplacementMonstre();
+		p.DeplacementFant();
 	}
 	}
 	}

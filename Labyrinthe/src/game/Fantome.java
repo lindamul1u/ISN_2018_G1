@@ -1,8 +1,7 @@
 package game;
 
 public class Fantome extends Monstres {
-	private int xmur;
-	private int ymur;
+	private boolean Etremur;
 	public Fantome(Plateau p,int id) {
 	super(p,id);
 	}
@@ -15,27 +14,27 @@ public class Fantome extends Monstres {
 		boolean a=Attaquer();
 		return a;
 		}
-	public void traverserMur() {
-		String[][] mat=p.getPlateau();
-		if(mat[x][y]==p.mur) {
-			xmur=x;
-			ymur=y;
-		}
-		
-		
-	}
-	public void ResetMur() {
-		p.setPlateau(xmur, ymur, p.mur);
-	}
+
+	
 	public void Aleatoire_deplacement() {
-		ResetMur();
+
 		
+	
 		int xD=nbAleat(-1,2);
 		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
-		if(p.appartientPlateau(x+xD,y+yD)) {
+		if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
 			setPos(x+xD,y+yD);
+			System.out.println("Chemin.");
+
+			this.Etremur=false;
 		}
-		
+		else if(p.getPlateau()[x+xD][y+yD].equals(p.mur)&& p.appartientPlateau(x+xD,y+yD)) {
+			System.out.println("Mur");
+			setPos(x+xD,y+yD);
+			this.Etremur=true;}
+	}
+	public boolean getBoolMur() {
+		return this.Etremur;
 	}
 
 }

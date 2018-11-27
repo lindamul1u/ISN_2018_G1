@@ -1,24 +1,37 @@
 package game;
 
 import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Vector;
 
-public class Plateau {
+import javax.swing.JFrame;
+
+public class Plateau  extends JFrame implements KeyListener  {
 
 	private String[][] plateau;//Matrice contenant l'information du plateau à l'instant n
 
+	private int longueur;
+	private int largeur;
+	private int x0;
+	private int y0;
+	private Graphique gr ;
+	
+	private int ymax=990;
+	private int xmax=1890;
 	//LES ENTIERS
-	private int n;//Nbr lignes
-	private int  m;//Nbr colones
-	private int nbrmurs;//Nbr murs
-	private int nbrcaselibre;//Nbr de case où le joueur peut se déplacer
-
+	int n;//Nbr lignes
+	 int  m;//Nbr colones
+	 int nbrmurs;//Nbr murs
+	int nbrcaselibre;//Nbr de case où le joueur peut se déplacer
+	private Fenetre f;
 	//Codage des objets dans la matrice
 	public final String mur="X";
 	public final String chemin="-";
 	public final String heros="0";
 	public final String tresor="T";
 	public final String monstre="M";
+	public final String Fant="F";
 	public final String piege="P";
 	public final String Magie="Ma";
 	//Les objets 
@@ -27,17 +40,20 @@ public class Plateau {
 	private Vector <Monstres> Vmonstre;
 	private Vector<Piege> Vp;
 	private Vector<CaseMagique> Ma;
+	private Vector<Monstres>F;
 	private int[][] Voisin;
 	//Communication entre le plateau et les objets
 	private char Commande;
 	private int arret;
-	private int NbMonstra_simple_intelalea;// 50/50
-	private int Nbpiege;
-	private int NbrMagique;
+	 int NbMonstra_simple_intelalea;// 50/50
+	int Nbpiege;
+	int NbrMagique;
+	int NbrFantome;
 	private boolean attaquedistance;
 	//Constructeur
 
 	public Plateau(int n,int m,int nbrmurs) {
+		this.f=f;
 
 		if(n>2&& m>2&& nbrmurs<=(n-2)*(m-2)) {
 			//Condition de validité du plateau
@@ -67,13 +83,16 @@ public class Plateau {
 			h=new Heros(this);
 			ajoutHeros();//place le héros sur le plateau (voir Héros)
 			Vmonstre=new Vector <Monstres>();
+			F=new Vector <Monstres>();
 			Vp=new Vector <Piege>();
 			Nbpiege=3;
-			NbMonstra_simple_intelalea = 1;
+			NbMonstra_simple_intelalea = 0;
+			this.NbrFantome=1;
 			this.NbrMagique=10;
 			h.setLife(5);
 			ajoutPiege();
-			ajoutMonstres(NbMonstra_simple_intelalea);
+			ajoutMonstres();
+			ajoutFant();
 			Ma=new Vector<CaseMagique>();
 			ajoutMagie(this.NbrMagique);
 			attaquedistance=false;
@@ -83,9 +102,355 @@ public class Plateau {
 		else {
 			System.out.println("Problème de dimenssionement");
 		}
+		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 
+
+		//this.setSize(1000,1000);
+		this.setUndecorated(false);
+		this.setVisible(true); 
+		longueur=this.getHeight();
+		largeur=this.getWidth();
+		X0Y0();
+		gr=new Graphique(Color.red);
+		gr.setPosX(x0);
+		gr.setPosY(y0);
+	
+   
+		this.addKeyListener(this); 
+
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		this.setContentPane(gr);
+		
+		go();
+		
+		
+
+	}
+	private void go(){
+		//fond();
+		
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	
+
+		int x=0;
+		int y=0;
+		String[][] mat=this.plateau;
+		
+			for(int j=0;j<m;j++) {
+				for(int i = 0; i < n; i++){
+				if(mat[i][j].equals(this.mur)) {
+					x=x0+i*30;
+					y=y0+j*30;
+					gr.setImage("mur.png");
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+					try {
+						Thread.sleep(4);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+				}
+				else if(mat[i][j].equals(this.chemin)) {
+					x=x0+i*30;
+					y=y0+j*30;
+					
+					gr.setImage("chemin.png");
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+					try {
+						Thread.sleep(4);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+		
+				}
+				else if(mat[i][j].equals(this.heros)) {
+					x=x0+i*30;
+					y=y0+j*30;
+					
+					gr.setImage("heros.png");
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+					try {
+						Thread.sleep(4);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+			
+				}
+				else if(mat[i][j].equals(this.tresor)) {
+					x=x0+i*30;
+					y=y0+j*30;
+					
+					gr.setImage("tresor.png");
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+					try {
+						Thread.sleep(4);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+				
+				}
+				else if(mat[i][j].equals(this.piege)) {
+					x=x0+i*30;
+					y=y0+j*30;
+					
+					gr.setImage("piege.png");
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+					try {
+						Thread.sleep(4);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+					
+		
+				
+			}
+				else if(mat[i][j].equals(this.Magie)) {
+					x=x0+i*30;
+					y=y0+j*30;
+					
+					gr.setImage("Magique.png");
+					gr.setPosX(x);
+					gr.setPosY(y);
+					gr.repaint();
+					try {
+						Thread.sleep(4);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+
+				}
+				}
+				}
+			
+
+//fond();
+		
+		//System.out.println(p);
+	}
+public void X0Y0() {
+
+
+	this.x0=(1890-30*n)/2;
+	this.y0=(990-30*m)/2;
+	
+}
+public void fond() {
+	for(int i=0;i<=xmax/30;i++) {
+		for(int j=0;j<=ymax/30;j++) {
+			
+				int x=i*30;
+				int y=j*30;
+				gr.setImage("fond.png");
+				gr.setPosX(x);
+				gr.setPosY(y);
+				gr.repaint();
+
+				try {
+					Thread.sleep(4);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				
+			
+		}
+		
+	}
+	for(int i=0;i<=4;i++) {
+		for(int j=0;j<=ymax/30;j++) {
+			
+				int x=i*30;
+				int y=j*30;
+				gr.setImage("fond.png");
+				gr.setPosX(x);
+				gr.setPosY(y);
+				gr.repaint();
+
+				try {
+					Thread.sleep(4);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				
+				
+			
+		}
+		
+	}
+}
+public void coeur(String s) {
+
+
+	for(int i=0;i<=h.getLife();i++) {
+		
+		int x=x0+(n+i)*30+30;
+		int y=y0;
+		gr.setImage(s);
+		gr.setPosX(x);
+		gr.setPosY(y);
+		gr.repaint();
+		try {
+			Thread.sleep(4);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+
+	}
+	
+}
+	@Override
+	public void keyPressed(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+
+		Commande=arg0.getKeyChar();
+		depainHeros();
+
+
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+		//System.out.println(p);
+
+		
+
+	
+		setCommande(Commande);
+		painHeros();
+
+		}
+	
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		// TODO Auto-generated method stub
+
+	}
+	public char getCommande() {
+		return Commande;
+	}
+	public void painMonstre(String s) {
+
+		for(Monstres x:Vmonstre) {
+			
+			int xm=x.getX();
+			int ym=x.getY();
+			xm=xm*30+x0;
+			ym=ym*30+y0;
+			gr.setImage(s);
+			gr.setPosX(xm);
+			gr.setPosY(ym);
+			gr.repaint();
+
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	
+		}
+		
+		
+		
+		
+	}
+	public void painFant(Fantome f,String s) {
+		
+
+			int xm=f.getX();
+			int ym=f.getY();
+			xm=xm*30+x0;
+			ym=ym*30+y0;
+			gr.setImage(s);
+			gr.setPosX(xm);
+			gr.setPosY(ym);
+			gr.repaint();
+
+			try {
+				Thread.sleep(200);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	
+		
+		
+		
+		
+		
+	}
+	public void depainHeros() {
+		
+		int xh=h.getX();
+		int yh=h.getY();
+	
+		xh=xh*30+x0;
+		yh=yh*30+y0;
+		
+		gr.setImage("chemin.png");
+		gr.setPosX(xh);
+		gr.setPosY(yh);
+		gr.repaint();
+		
+	
+		if(getArret()==1) {
+			gr.setArret(1);
+			gr.repaint();
+			}
+		
 		
 	}
 	
+public void painHeros() {
+		
+		int xh=h.getX();
+		int yh=h.getY();
+	
+		xh=xh*30+x0;
+		yh=yh*30+y0;
+		
+
+		gr.setImage("heros.png");
+		gr.setPosX(xh);
+		gr.setPosY(yh);
+		gr.repaint();
+		
+	
+		if(getArret()==1) {
+			gr.setArret(1);
+			gr.repaint();
+			}
+		
+		
+	}
+
+	
+
+
+
+
+
+
+
 
 
 
@@ -296,16 +661,35 @@ return true;
 		Vmonstre=New;
 		
 	}
+	public void setFantome(int id) {
+		Vector<Monstres> New=new Vector<Monstres>();
+		for(int i=0;i<F.size();i++) {
+			if(F.get(i).id!=id) {
+				New.add(F.get(i));
+			}
+		}
+		F=New;
+		
+	}
+
+	private void ajoutFant() {
+		// TODO Auto-generated method stub
+		for(int i=0;i<(int)this.NbrFantome;i++) {
+			F.add(new Fantome(this,i));
+			Monstres m= F.get(i);
+			plateau[m.getX()][m.getY()]=this.Fant;
+			
+		}
+	}
+	private void ajoutMonstres() {
 	
-	private void ajoutMonstres(int M) {
-	
-		for(int i=0;i<(int)M/2;i++) {
+		for(int i=0;i<(int)this.NbMonstra_simple_intelalea/2;i++) {
 			Vmonstre.add(new Monstreintel_simple(this,i));
 			Monstres m2= Vmonstre.get(i);
 			plateau[m2.getX()][m2.getY()]=monstre;
 			
 		}
-		for(int i=(int) M/2;i<M;i++) {
+		for(int i=(int) this.NbMonstra_simple_intelalea/2;i<this.NbMonstra_simple_intelalea;i++) {
 			Vmonstre.add(new Monstrealea_simple(this,i));
 			Monstres m=(Monstrealea_simple) Vmonstre.get(i);
 			plateau[m.getX()][m.getY()]=monstre;
@@ -325,6 +709,22 @@ return true;
 		return null;
 			
 	}
+	public void supprFantome(Fantome m) {
+		int xm=m.getX();int ym=m.getY();
+		if(m.getBoolMur()==true) {
+			plateau[xm][ym]=this.mur;
+			
+
+			painFant(m,"mur.png");
+		}
+		else {
+			plateau[xm][ym]=this.chemin;
+
+			painFant(m,"chemin.png");
+		}
+		
+		
+	}
 	public void DeplacementMonstre() {
 		
 		for(int i=0;i<Vmonstre.size();i++) {
@@ -335,7 +735,7 @@ return true;
 			
 			if(a==true) {
 				
-				setMonstres(m.id);
+				this.setFantome(m.id);
 			
 
 				System.out.println("Mort "+m+" "+m.id);
@@ -349,12 +749,48 @@ return true;
 		}
 		
 	}
+	public void DeplacementFant() {
+		
+		for(int i=0;i<F.size();i++) {
+			
+			Fantome m=(Fantome) F.get(i);
+			int x=m.getX();
+			int y=m.getY();
+			this.supprFantome(m);
+			
+			boolean a=m.deplacer();
+			painFant(m,"monstre1.png");
+			painFant(m,"monstre2.png");
+			painFant(m,"monstre3.png");
+
+			if(a==true) {
+				
+				this.setFantome(m.id);
+				this.supprFantome(m);
+			
+
+				System.out.println("Mort "+m+" "+m.id);
+				
+			}
+	
+			else {
+			//Repositione le monstre de manière aléatoire
+			int xm=m.getX();int ym=m.getY();
+			plateau[xm][ym]=this.Fant;}
+			
+			
+		}
+		
+	}
 	//Permet de remplacer un élement par un chemin(déplacement ...)
 	public void remove(int i,int j) {
 		if(!plateau[i][j].equals(mur)) {
 			plateau[i][j]=chemin;
 		}
 
+	}
+	public Vector<Monstres> getFantome(){
+		return this.F;
 	}
 	
 	public String getTres() {
