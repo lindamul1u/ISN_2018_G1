@@ -1,5 +1,4 @@
 package game;
-
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -9,7 +8,7 @@ import javax.swing.JFrame;
 
 public class Plateau     {
 
-	private String[][] plateau;//Matrice contenant l'information du plateau à l'instant n
+	private String[][] plateau;//Matrice contenant l'information du plateau Ã  l'instant n
 
 	private int longueur;
 	private int largeur;
@@ -23,7 +22,7 @@ public class Plateau     {
 	int n;//Nbr lignes
 	int  m;//Nbr colones
 	int nbrmurs;//Nbr murs
-	int nbrcaselibre;//Nbr de case où le joueur peut se déplacer
+	int nbrcaselibre;//Nbr de case oÃ¹ le joueur peut se dÃ©placer
 	private Fenetre f;
 	//Codage des objets dans la matrice
 	public final String mur="X";
@@ -46,48 +45,50 @@ public class Plateau     {
 	private char Commande;
 	private int arret;
 	int NbMonstra_simple_intelalea;// 50/50
+	int NbrFantome_alea_intel;
 	int Nbpiege;
 	int NbrMagique;
 	int NbrFantome;
 	private boolean attaquedistance;
 	//Constructeur
-
+ 
 	public Plateau(int n,int m,int nbrmurs) {
 		this.f=f;
 
 		if(n>2&& m>2&& nbrmurs<=(n-2)*(m-2)) {
-			//Condition de validité du plateau
+			//Condition de validitÃ© du plateau
 			this.n=n;
 			this.m=m;
 			this.nbrmurs=nbrmurs;
 			plateau=new String[n][m];
 			arret=0;
-			//Mise en place des murs extérieurs
+			//Mise en place des murs extÃ©rieurs
 			for(int i=0;i<n;i++) {
 				for(int j=0;j<m;j++) {
 					if(!appartientPlateau(i,j))// Si mur ext
-						plateau[i][j]=mur;// On définit "X" comme étant les murs
+						plateau[i][j]=mur;// On dÃ©finit "X" comme Ã©tant les murs
 					else 
-						plateau[i][j]=chemin;// On définit " " comme étant les chemins
+						plateau[i][j]=chemin;// On dÃ©finit " " comme Ã©tant les chemins
 				}
 			}
 
-			murAleat(nbrmurs);// place nbrmurs de manières aléatoire sur le plateau
+			murAleat(nbrmurs);// place nbrmurs de maniÃ¨res alÃ©atoire sur le plateau
 			ajustement();//ajustement du plateau afin de ne pas avoir de zone inaccessible par le joueur
 
 			t=new Tresor(this);
-			plateau[t.getX()][t.getY()]=tresor;//On place le trésore à sa place (voir classe Tresor)
+			plateau[t.getX()][t.getY()]=tresor;//On place le trÃ©sore Ã  sa place (voir classe Tresor)
 
-			nbrcase();//Calcul le nbr de case de déplacement et les murs
+			nbrcase();//Calcul le nbr de case de dÃ©placement et les murs
 
 			h=new Heros(this);
-			ajoutHeros();//place le héros sur le plateau (voir Héros)
+			ajoutHeros();//place le hÃ©ros sur le plateau (voir HÃ©ros)
 
 			Vmonstre=new Vector <Monstres>();
 			F=new Vector <Monstres>();
 			Vp=new Vector <Piege>();
 			Nbpiege=3;
 			NbMonstra_simple_intelalea = 1;
+			NbrFantome_alea_intel =1;
 			this.NbrFantome=1;
 			this.NbrMagique=10;
 			h.setLife(5);
@@ -101,7 +102,7 @@ public class Plateau     {
 
 		}
 		else {
-			System.out.println("Problème de dimenssionement");
+			System.out.println("ProblÃ¨me de dimenssionement");
 		}
 
 
@@ -149,9 +150,9 @@ public class Plateau     {
 	}
 
 
-	/* Méthodes PRIVATE*/
+	/* MÃ©thodes PRIVATE*/
 	//----------------------------
-	//Vérifie que le couple (x,y) n'est pas mur extérieur
+	//VÃ©rifie que le couple (x,y) n'est pas mur extÃ©rieur
 	public boolean appartientPlateau(int x,int y) {
 		if(x>0 && x<n-1 && y>0 && y<m-1) {
 			return true;
@@ -179,7 +180,7 @@ public class Plateau     {
 		return Min + (int)(Math.random() * ((Max - Min) ));
 	}
 
-	//génere les N murs sur le plateau de façon aléat
+	//gÃ©nere les N murs sur le plateau de faÃ§on alÃ©at
 	private void murAleat(int nbrmurs) {
 		int x=0;
 		int y=0;
@@ -189,7 +190,7 @@ public class Plateau     {
 			x=nbAleat(1,n);
 			y=nbAleat(1,m);
 
-			while(plateau[x][y].equals(mur)|| !appartientPlateau(x,y)) {// il faut que le nouveau mur soit sur le plateau et qu'il n'y ai pas de mur dejà avant
+			while(plateau[x][y].equals(mur)|| !appartientPlateau(x,y)) {// il faut que le nouveau mur soit sur le plateau et qu'il n'y ai pas de mur dejÃ  avant
 
 				x=nbAleat(1,n);
 				y=nbAleat(1,m);
@@ -200,13 +201,13 @@ public class Plateau     {
 			plateau[x][y]=mur;
 		}
 	}
-	// modifie le plateau de manière à le rendre exploitable
+	// modifie le plateau de maniÃ¨re Ã  le rendre exploitable
 	private void ajustement() {
-		int[][] V1=voisin();//Matrice où V1[i][j]= le nombre de case de déplacement dispo au voisinage de plateau[i][j]
+		int[][] V1=voisin();//Matrice oÃ¹ V1[i][j]= le nombre de case de dÃ©placement dispo au voisinage de plateau[i][j]
 		for(int i=1;i<n-1;i++) {
 			for(int j=1;j<m-1;j++) {
-				while(V1[i][j]<=3) {//On considère qu'un plateau est ok si chaque case a au moins 3 voisins de type chemin
-					supprMur(i,j);// sinon on supprime un mur de manière aléatoire au voisinage de la case [i][j]
+				while(V1[i][j]<=3) {//On considÃ¨re qu'un plateau est ok si chaque case a au moins 3 voisins de type chemin
+					supprMur(i,j);// sinon on supprime un mur de maniÃ¨re alÃ©atoire au voisinage de la case [i][j]
 					V1=voisin();//On recalcule V1
 				}
 			}
@@ -215,7 +216,7 @@ public class Plateau     {
 	}
 	public boolean nombreVoisinCorrect(int[][] v,int i,int j) {
 
-		if(v[i][j]<=2) {//On considère qu'un plateau est ok si chaque case a au moins 3 voisins de type chemin
+		if(v[i][j]<=2) {//On considÃ¨re qu'un plateau est ok si chaque case a au moins 3 voisins de type chemin
 
 
 			return false;
@@ -225,7 +226,7 @@ public class Plateau     {
 		return true;
 
 	}
-	//Génère la matrice adjacent où une case compte pour voisin si celui-ci est "-"
+	//GÃ©nÃ¨re la matrice adjacent oÃ¹ une case compte pour voisin si celui-ci est "-"
 	public int[][] voisin() {
 		int[][] adj=new int[n][m];
 		for(int i=0;i<n;i++) {
@@ -234,11 +235,11 @@ public class Plateau     {
 				for(int l=-1;l<=1;l++) {
 					for(int m=-1;m<=1;m++) {
 						if( appartientPlateau(i+l,j+m) && plateau[i+l][j+m].equals(chemin)) {// Regarde dans les 8 directions
-							S+=1;// On vérifie que l'élement adjacent à la case (i,j) n'est pas un mur extérieur (out of range) et que celui-ci est un chemin
+							S+=1;// On vÃ©rifie que l'Ã©lement adjacent Ã  la case (i,j) n'est pas un mur extÃ©rieur (out of range) et que celui-ci est un chemin
 						}
 					}
 				}
-				if( plateau[i][j].equals(chemin)) {//Si l'élement (i,j) est déjà un chemin alors S a compté (i,j) comme étant voisin de lui même
+				if( plateau[i][j].equals(chemin)) {//Si l'Ã©lement (i,j) est dÃ©jÃ  un chemin alors S a comptÃ© (i,j) comme Ã©tant voisin de lui mÃªme
 					adj[i][j]=S;
 
 				}
@@ -249,13 +250,13 @@ public class Plateau     {
 		}
 		this.Voisin=adj;
 		return adj;}
-	// Supprime un mur sur une case adjacent de (i,j) de manière aléatoire
+	// Supprime un mur sur une case adjacent de (i,j) de maniÃ¨re alÃ©atoire
 	private void supprMur(int i,int j) {
 
 		int xD=nbAleat(-1,2);
-		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
+		int yD=nbAleat(-1,2);// entier alÃ©atoire entre [-1;1]
 		if(appartientPlateau(i+xD,j+yD))
-			plateau[i+xD][j+yD]=chemin;// L'élement adjacent de (i,j) n'est pas un mur extérieur on le supprime
+			plateau[i+xD][j+yD]=chemin;// L'Ã©lement adjacent de (i,j) n'est pas un mur extÃ©rieur on le supprime
 	}
 	//Affiche la matrice adjacent 
 	private void afficheVoisin(int[][] v) {
@@ -286,7 +287,7 @@ public class Plateau     {
 		}
 		return S;
 	}
-	//Permet d'insérer un objt dans la matrice à partir de son code
+	//Permet d'insÃ©rer un objt dans la matrice Ã  partir de son code
 	public void setPlateau(int i,int j,String s) {
 		plateau[i][j]=s;
 	}
@@ -329,7 +330,7 @@ public class Plateau     {
 		plateau[h.getX()][h.getY()]=chemin;
 
 	}	
-	// Gestion de déplacement du héros
+	// Gestion de dÃ©placement du hÃ©ros
 	public void setCommande(char c) {
 		Commande=c;
 		supprHeros();
@@ -366,11 +367,16 @@ public class Plateau     {
 
 	private void ajoutFant() {
 		// TODO Auto-generated method stub
-		for(int i=0;i<(int)this.NbrFantome;i++) {
-			F.add(new Fantome(this,i));
+		for(int i=0;i<(int)this.NbrFantome_alea_intel/2;i++) {
+			F.add(new Fantome_intel(this,i));
 			Monstres m= F.get(i);
 			plateau[m.getX()][m.getY()]=this.Fant;
 
+		}
+		for(int i=(int) this.NbrFantome_alea_intel/2;i<this.NbrFantome_alea_intel;i++) {
+			Vmonstre.add(new Fantome_alea(this,i));
+			Monstres m4=(Monstrealea_simple) Vmonstre.get(i);
+			plateau[m4.getX()][m4.getY()]=this.Fant;
 		}
 	}
 	private void ajoutMonstres() {
@@ -432,7 +438,7 @@ public class Plateau     {
 			}
 
 			else {
-				//Repositione le monstre de manière aléatoire
+				//Repositione le monstre de maniÃ¨re alÃ©atoire
 				int xm=m.getX();int ym=m.getY();
 				plateau[xm][ym]=monstre;}
 
@@ -460,7 +466,7 @@ public class Plateau     {
 			}
 
 			else {
-				//Repositione le monstre de manière aléatoire
+				//Repositione le monstre de maniÃ¨re alÃ©atoire
 				int xm=m.getX();int ym=m.getY();
 				plateau[xm][ym]=this.Fant;}
 
@@ -472,7 +478,7 @@ public class Plateau     {
 		}
 
 	}
-	//Permet de remplacer un élement par un chemin(déplacement ...)
+	//Permet de remplacer un Ã©lement par un chemin(dÃ©placement ...)
 	public void remove(int i,int j) {
 		if(!plateau[i][j].equals(mur)) {
 			plateau[i][j]=chemin;
@@ -498,7 +504,7 @@ public class Plateau     {
 	}
 
 
-	// Piège
+	// PiÃ¨ge
 
 	private void ajoutPiege() {
 		for(int i=0;i<Nbpiege;i++) {

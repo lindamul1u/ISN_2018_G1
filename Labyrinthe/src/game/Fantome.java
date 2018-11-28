@@ -10,7 +10,7 @@ public class Fantome extends Monstres {
 
 	
 	
-	public boolean deplacer(){ //déplacement du monstre dans une direction aléatoire
+	public boolean deplacer(){ //dÃ©placement du fantome dans une direction alÃ©atoire
 		Aleatoire_deplacement();
 		
 		boolean a=Attaquer();
@@ -23,7 +23,7 @@ public class Fantome extends Monstres {
 		
 	
 		int xD=nbAleat(-1,2);
-		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
+		int yD=nbAleat(-1,2);// entier alÃ©atoire entre [-1;1]
 		if(p.appartientPlateau(x+xD, y+yD))
 		{
 			if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
