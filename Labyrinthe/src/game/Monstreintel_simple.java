@@ -5,6 +5,7 @@ public class Monstreintel_simple extends Monstres {
 	public Monstreintel_simple(Plateau p,int id) {
 // TODO Auto-generated constructor stub
 		super(p,id);
+		this.PosInitialisation();
 	}
 
 	@Override

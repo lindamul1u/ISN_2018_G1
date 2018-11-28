@@ -3,6 +3,7 @@ public class Monstrealea_simple extends Monstres {
 	
 	public Monstrealea_simple(Plateau p,int id) {
 	super(p,id);
+	this.PosInitialisation();
 	}
 
 	
@@ -10,6 +11,7 @@ public class Monstrealea_simple extends Monstres {
 	public boolean deplacer(){ //déplacement du monstre dans une direction aléatoire
 		Aleatoire_deplacement();
 		boolean a=Attaquer();
+
 		return a;
 		}
 

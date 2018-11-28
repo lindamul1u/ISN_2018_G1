@@ -1,3 +1,5 @@
+
+
 package game;
 
 public abstract class Monstres {
@@ -25,14 +27,15 @@ public abstract class Monstres {
 		int Nbrcaselibre=p.getNbrchemin();
 		int indice=nbAleat(1,Nbrcaselibre);
 		int S=0;
-		for(int i=0;i<n;i++) {
-			for(int j=0;j<m;j++) {
-				if(M[i][j].equals(p.getChemin())) {
+		for(int i=2;i<p.n-1;i++) {
+			for(int j=2;j<p.m-1;j++) {
+				if(!M[i][j].equals(p.mur)) {
 					S+=1;
 				}
 				if(S==indice) {//on place le monstre à la kème case libre du plateau 
 					x=i;
 					y=j;
+			
 					i=n;
 					break;
 
@@ -42,14 +45,24 @@ public abstract class Monstres {
 		}
 	}
 	public void Aleatoire_deplacement() {
-
 		int xD=nbAleat(-1,2);
-		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
-		if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
-			setPos(x+xD,y+yD);
+		int yD=nbAleat(-1,2);
+		while(xD==0&&yD==0) {
+		 xD=nbAleat(-1,2);
+		 yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
 		}
 		
-	}
+		if(p.appartientPlateau(x+xD, y+yD))
+		{
+			
+			if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
+		setPos(x+xD,y+yD);}}
+		else {
+			this.Aleatoire_deplacement();
+		}
+		}
+		
+	
 
 
 	public abstract boolean deplacer();
@@ -92,6 +105,7 @@ public abstract class Monstres {
 			int life=h.getLife();
 			if(life>0) {
 				h.setLife(life-1);
+				p.supprMonstre(this);
 			}
 	
 			return  true;

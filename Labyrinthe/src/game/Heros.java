@@ -77,9 +77,8 @@ public class Heros {
 		p.remove(x, y);
 		possedeArmure();
 		
-		
 		if(Point_vie==0) {
-			
+			System.out.println(Point_vie);	
 			return 1;
 		}
 		
@@ -111,9 +110,12 @@ public class Heros {
 			
 		}
 		else if(c=='8') {
+			
+
 			if(p.getPlateau()[x][y-1].equals(p.chemin)) {
 				setPos(x,y-1);
-			
+
+				
  
 			}
 			else if(p.getPlateau()[x][y-1].equals(p.tresor)) {

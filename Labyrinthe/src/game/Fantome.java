@@ -4,6 +4,8 @@ public class Fantome extends Monstres {
 	private boolean Etremur;
 	public Fantome(Plateau p,int id) {
 	super(p,id);
+	this.PosInitialisation();
+	System.out.println(this);
 	}
 
 	
@@ -22,16 +24,24 @@ public class Fantome extends Monstres {
 	
 		int xD=nbAleat(-1,2);
 		int yD=nbAleat(-1,2);// entier aléatoire entre [-1;1]
-		if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
-			setPos(x+xD,y+yD);
-			System.out.println("Chemin.");
-
-			this.Etremur=false;
+		if(p.appartientPlateau(x+xD, y+yD))
+		{
+			if(p.getPlateau()[x+xD][y+yD].equals(p.getChemin())) {
+		setPos(x+xD,y+yD);
+		this.Etremur=false;
 		}
+
 		else if(p.getPlateau()[x+xD][y+yD].equals(p.mur)&& p.appartientPlateau(x+xD,y+yD)) {
-			System.out.println("Mur");
+		
 			setPos(x+xD,y+yD);
 			this.Etremur=true;}
+
+			
+		}
+		else {
+			this.Aleatoire_deplacement();
+			
+		}
 	}
 	public boolean getBoolMur() {
 		return this.Etremur;

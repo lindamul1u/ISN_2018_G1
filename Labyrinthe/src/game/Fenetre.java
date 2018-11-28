@@ -32,7 +32,7 @@ public class Fenetre extends JFrame implements KeyListener{
 		longueur=this.getHeight();
 		largeur=this.getWidth();
 		X0Y0();
-		gr=new Graphique(Color.red);
+		gr=new Graphique(Color.red,p);
 		gr.setPosX(x0);
 		gr.setPosY(y0);
 	
