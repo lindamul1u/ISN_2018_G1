@@ -18,6 +18,7 @@ public abstract class Monstres {
 		PosInitialisation();
 		
 	}
+	
 	protected int nbAleat(int Min,int Max) {
 		return Min + (int)(Math.random() * ((Max - Min) ));
 	}

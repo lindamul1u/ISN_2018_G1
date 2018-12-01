@@ -7,6 +7,8 @@ import java.util.Vector;
 
 import javax.swing.JFrame;
 
+import Test.ErreurPlateauException;
+
 public class Plateau     {
 
 	private String[][] plateau;//Matrice contenant l'information du plateau à l'instant n
@@ -52,59 +54,52 @@ public class Plateau     {
 	private boolean attaquedistance;
 	//Constructeur
 
-	public Plateau(int NbMo,int NbMa,int NbF,int NbP,int n,int m,int nbrmurs,int life) {
+	public Plateau(int NbMo,int NbMa,int NbF,int NbP,int n,int m,int nbrmurs,int life) throws ErreurPlateauException {
 		this.f=f;
 
-		if(n>2&& m>2&& nbrmurs<=(n-2)*(m-2)) {
-			//Condition de validité du plateau
-			this.n=n;
-			this.m=m;
-			this.nbrmurs=nbrmurs;
-			plateau=new String[n][m];
-			arret=0;
-			//Mise en place des murs extérieurs
-			for(int i=0;i<n;i++) {
-				for(int j=0;j<m;j++) {
-					if(!appartientPlateau(i,j))// Si mur ext
-						plateau[i][j]=mur;// On définit "X" comme étant les murs
-					else 
-						plateau[i][j]=chemin;// On définit " " comme étant les chemins
-				}
+		//Condition de validité du plateau
+		this.n=n;
+		this.m=m;
+		this.nbrmurs=nbrmurs;
+		plateau=new String[n][m];
+		arret=0;
+		//Mise en place des murs extérieurs
+		for(int i=0;i<n;i++) {
+			for(int j=0;j<m;j++) {
+				if(!appartientPlateau(i,j))// Si mur ext
+					plateau[i][j]=mur;// On définit "X" comme étant les murs
+				else 
+					plateau[i][j]=chemin;// On définit " " comme étant les chemins
 			}
-
-			murAleat(nbrmurs);// place nbrmurs de manières aléatoire sur le plateau
-			ajustement();//ajustement du plateau afin de ne pas avoir de zone inaccessible par le joueur
-
-			t=new Tresor(this);
-			plateau[t.getX()][t.getY()]=tresor;//On place le trésore à sa place (voir classe Tresor)
-
-			nbrcase();//Calcul le nbr de case de déplacement et les murs
-
-			h=new Heros(this);
-
-			Vmonstre=new Vector <Monstres>();
-			F=new Vector <Monstres>();
-			Vp=new Vector <Piege>();
-			
-			this.NbMonstra_simple_intelalea=NbMo;
-			this.Nbpiege=NbP;
-			this.NbrFantome=NbF;
-			this.NbrMagique=NbMa;
-	
-			h.setLife(life);
-			ajoutHeros();//place le héros sur le plateau (voir Héros)
-			ajoutPiege();
-			ajoutMonstres();
-			ajoutFant();
-			Ma=new Vector<CaseMagique>();
-			ajoutMagie(this.NbrMagique);
-			attaquedistance=false;
-
-
 		}
-		else {
-			System.out.println("Problème de dimenssionement");
-		}
+
+		murAleat(nbrmurs);// place nbrmurs de manières aléatoire sur le plateau
+		ajustement();//ajustement du plateau afin de ne pas avoir de zone inaccessible par le joueur
+
+		t=new Tresor(this);
+		plateau[t.getX()][t.getY()]=tresor;//On place le trésore à sa place (voir classe Tresor)
+
+		nbrcase();//Calcul le nbr de case de déplacement et les murs
+
+		h=new Heros(this);
+
+		Vmonstre=new Vector <Monstres>();
+		F=new Vector <Monstres>();
+		Vp=new Vector <Piege>();
+		
+		this.NbMonstra_simple_intelalea=NbMo;
+		this.Nbpiege=NbP;
+		this.NbrFantome=NbF;
+		this.NbrMagique=NbMa;
+
+		h.setLife(life);
+		ajoutHeros();//place le héros sur le plateau (voir Héros)
+		ajoutPiege();
+		ajoutMonstres();
+		ajoutFant();
+		Ma=new Vector<CaseMagique>();
+		ajoutMagie(this.NbrMagique);
+		attaquedistance=false;
 
 
 		gr=new Graphique(Color.red,this);
@@ -184,7 +179,7 @@ public class Plateau     {
 			x=nbAleat(1,n);
 			y=nbAleat(1,m);
 
-			while(plateau[x][y].equals(mur)|| !appartientPlateau(x,y)) {// il faut que le nouveau mur soit sur le plateau et qu'il n'y ai pas de mur dejà avant
+			while(!appartientPlateau(x,y) || plateau[x][y].equals(mur)) {// il faut que le nouveau mur soit sur le plateau et qu'il n'y ai pas de mur dejà avant
 
 				x=nbAleat(1,n);
 				y=nbAleat(1,m);

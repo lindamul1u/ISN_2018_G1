@@ -60,6 +60,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import Test.ErreurPlateauException;
+
 public class Fenetre extends JFrame{
 
 	JPanel content = new JPanel();
@@ -77,7 +79,7 @@ public class Fenetre extends JFrame{
 	int life;
 
 
-	public Fenetre() {
+	public Fenetre() throws ErreurPlateauException {
 		debut=false;
 		Plateau p=new Plateau(0,0,0,0,40,10,0,0);
 		Graphique gr=p.gr;

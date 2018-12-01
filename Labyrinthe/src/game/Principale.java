@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.swing.JFrame;
 
+import Test.ErreurPlateauException;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
@@ -12,7 +14,7 @@ import java.awt.event.KeyListener;
 import java.util.*;
 public class Principale {
 	static Plateau p;
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ErreurPlateauException {
 		
 		Intro();
 		
@@ -20,7 +22,7 @@ public class Principale {
 	}
 	static JFrame frame = new JFrame("Un titre");
 
-	public static void Game() {
+	public static void Game() throws ErreurPlateauException {
 	
 		//System.out.println(p);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
@@ -118,7 +120,7 @@ public class Principale {
 	
 
 	}
-	public static void Intro() {
+	public static void Intro() throws ErreurPlateauException {
 		Fenetre f=new Fenetre();
 		Fond fond=new Fond();
 		f.getContentPane().add(fond, BorderLayout.CENTER);
