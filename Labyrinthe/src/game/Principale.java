@@ -3,6 +3,7 @@ package game;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 
 import Test.ErreurPlateauException;
@@ -11,6 +12,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 public class Principale {
 	static Plateau p;
@@ -20,7 +23,7 @@ public class Principale {
 		
 	
 	}
-	static JFrame frame = new JFrame("Un titre");
+	static JFrame frame = new JFrame("Elvis dans le monde des mort");
 
 	public static void Game() throws ErreurPlateauException {
 	
@@ -33,7 +36,12 @@ public class Principale {
 		frame.pack();
 		frame.setVisible(true);
 		
-
+		try {
+			frame.setIconImage(ImageIO.read(new File("H1.png")));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		Clavier c=new Clavier(p);
 		frame.addKeyListener(c); 

@@ -22,7 +22,7 @@ public void setN() {
 }
 	public void setImage(String s){
 		try {
-			this.image = image = ImageIO.read(new File(s));
+			this.image =  ImageIO.read(new File(s));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

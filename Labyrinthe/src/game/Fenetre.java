@@ -56,6 +56,10 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -83,11 +87,16 @@ public class Fenetre extends JFrame{
 		debut=false;
 		Plateau p=new Plateau(0,0,0,0,40,10,0,0);
 		Graphique gr=p.gr;
-		this.setTitle("CardLayout");
+		this.setTitle("Elvis dans le monde des mortt");
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH); 	
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocationRelativeTo(null);
-
+		try {
+			this.setIconImage( ImageIO.read(new File("H1.png")));
+		} catch (IOException e)  {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		//On crée trois conteneurs de couleur différente
 
 
